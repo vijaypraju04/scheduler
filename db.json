@@ -1,0 +1,178 @@
+{
+  "providers": [
+    {
+      "id": "p1",
+      "name": "Dr. Smith"
+    },
+    {
+      "id": "p2",
+      "name": "Dr. Jones"
+    },
+    {
+      "id": "p3",
+      "name": "Dr. Brown"
+    }
+  ],
+  "schedules": [
+    {
+      "providerId": "p1",
+      "availability": [
+        {
+          "date": "2024-06-19",
+          "startTime": "08:00",
+          "endTime": "15:00"
+        },
+        {
+          "date": "2024-06-20",
+          "startTime": "09:00",
+          "endTime": "17:00"
+        }
+      ],
+      "id": "d0b0"
+    },
+    {
+      "providerId": "p2",
+      "availability": [
+        {
+          "date": "2024-06-10",
+          "startTime": "10:00",
+          "endTime": "14:00"
+        },
+        {
+          "date": "2024-06-21",
+          "startTime": "08:00",
+          "endTime": "12:00"
+        }
+      ],
+      "id": "938c"
+    },
+    {
+      "providerId": "p3",
+      "availability": [
+        {
+          "date": "2024-06-22",
+          "startTime": "13:00",
+          "endTime": "18:00"
+        },
+        {
+          "date": "2024-06-23",
+          "startTime": "09:00",
+          "endTime": "15:00"
+        }
+      ],
+      "id": "c943"
+    }
+  ],
+  "clients": [
+    {
+      "id": "c101",
+      "name": "Alice Johnson",
+      "email": "alice.johnson@example.com"
+    },
+    {
+      "id": "c102",
+      "name": "Bob Smith",
+      "email": "bob.smith@example.com"
+    },
+    {
+      "id": "c103",
+      "name": "Charlie Brown",
+      "email": "charlie.brown@example.com"
+    },
+    {
+      "id": "c104",
+      "name": "Dana White",
+      "email": "dana.white@example.com"
+    }
+  ],
+  "reservations": [
+    {
+      "id": "706b68f6-f644-430d-805e-416841c93c0e",
+      "clientId": "45902869-e25b-466b-bc28-fe61e643690b",
+      "providerId": "p1",
+      "date": "2024-06-18",
+      "startTime": "16:15",
+      "endTime": "00:30",
+      "status": "confirmed",
+      "madeAt": "2024-06-13T15:53:27.534Z",
+      "expiresAt": "2024-06-13T16:08:27.534Z"
+    },
+    {
+      "id": "074b588d-288d-4dc5-9d3d-8d1a54b00eda",
+      "clientId": "45902869-e25b-466b-bc28-fe61e643690b",
+      "providerId": "p1",
+      "date": "2024-06-18",
+      "startTime": "16:30",
+      "endTime": "00:45",
+      "status": "confirmed",
+      "madeAt": "2024-06-13T15:53:39.235Z",
+      "expiresAt": "2024-06-13T16:08:39.235Z"
+    },
+    {
+      "id": "a62371f8-0721-4ed9-bc88-81a27d6b7184",
+      "clientId": "45902869-e25b-466b-bc28-fe61e643690b",
+      "providerId": "p1",
+      "date": "2024-06-18",
+      "startTime": "17:30",
+      "endTime": "01:45",
+      "status": "confirmed",
+      "madeAt": "2024-06-13T15:53:41.234Z",
+      "expiresAt": "2024-06-13T16:08:41.234Z"
+    },
+    {
+      "id": "41a776f5-9768-446f-b62f-b4028c8c5b0c",
+      "clientId": "45902869-e25b-466b-bc28-fe61e643690b",
+      "providerId": "p1",
+      "date": "2024-06-18",
+      "startTime": "18:15",
+      "endTime": "02:30",
+      "status": "confirmed",
+      "madeAt": "2024-06-13T15:53:53.020Z",
+      "expiresAt": "2024-06-13T16:08:53.020Z"
+    },
+    {
+      "id": "a2a16b55-67a4-4371-a334-080c2e1e9e22",
+      "clientId": "45902869-e25b-466b-bc28-fe61e643690b",
+      "providerId": "p1",
+      "date": "2024-06-18",
+      "startTime": "18:30",
+      "endTime": "02:45",
+      "status": "pending",
+      "madeAt": "2024-06-13T15:53:55.269Z",
+      "expiresAt": "2024-06-13T16:08:55.269Z"
+    },
+    {
+      "id": "2d5ce9a3-dd11-421a-9437-e0ee249631c3",
+      "clientId": "45902869-e25b-466b-bc28-fe61e643690b",
+      "providerId": "p1",
+      "date": "2024-06-18",
+      "startTime": "17:45",
+      "endTime": "02:00",
+      "status": "pending",
+      "madeAt": "2024-06-13T15:54:14.536Z",
+      "expiresAt": "2024-06-13T16:09:14.536Z"
+    },
+    {
+      "id": "741d4ad0-b821-45be-ac6f-449d2e8f68ec",
+      "clientId": "45902869-e25b-466b-bc28-fe61e643690b",
+      "providerId": "p1",
+      "date": "2024-06-18",
+      "startTime": "18:45",
+      "endTime": "03:00",
+      "status": "pending",
+      "madeAt": "2024-06-13T15:54:16.587Z",
+      "expiresAt": "2024-06-13T16:09:16.587Z"
+    },
+    {
+      "id": "d8f0740d-1fb0-46a8-a0ce-b2cde7428c1f",
+      "clientId": "45902869-e25b-466b-bc28-fe61e643690b",
+      "providerId": "p1",
+      "date": "2024-06-18",
+      "startTime": "19:45",
+      "endTime": "04:00",
+      "status": "pending",
+      "madeAt": "2024-06-13T15:54:18.506Z",
+      "expiresAt": "2024-06-13T16:09:18.506Z"
+    }
+  ]
+}

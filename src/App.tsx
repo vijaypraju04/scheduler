@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { styled } from "styled-components";
+import { AppointmentBooker } from "./components/AppointmentBooker";
+import { v4 as uuidv4 } from "uuid";
 
-function App() {
+const App: React.FC = () => {
+  useEffect(() => {
+    const clientId = localStorage.getItem("clientId");
+    if (!clientId) {
+      localStorage.setItem("clientId", uuidv4());
+    }
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppContainer>
+      <Header>
+        <h1>Appointment Booker</h1>
+      </Header>
+      <main>
+        <AppointmentBooker />
+      </main>
+    </AppContainer>
   );
-}
+};
 
 export default App;
+
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  gap: 40px;
+`;
+
+const Header = styled.header`
+  font-size: 32px;
+  margin: 20px;
+`;
