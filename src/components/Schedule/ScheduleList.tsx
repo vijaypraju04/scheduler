@@ -47,6 +47,19 @@ export const ScheduleList: React.FC<ScheduleListProps> = ({
                         : slot.state === "pending"
                         ? "#ffa07a"
                         : "#fff",
+                    transition: "background-color 0.3s",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (slot.state === "unbooked") {
+                      (e.currentTarget as HTMLElement).style.backgroundColor =
+                        "#f0f0f0";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (slot.state === "unbooked") {
+                      (e.currentTarget as HTMLElement).style.backgroundColor =
+                        "#fff";
+                    }
                   }}
                 >
                   <CardContent>

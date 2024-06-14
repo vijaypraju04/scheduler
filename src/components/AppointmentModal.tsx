@@ -26,51 +26,76 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
 }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState({ name: false, email: false });
 
   const handleReserve = () => {
-    onReserve(name, email);
-    setName("");
-    setEmail("");
+    const isNameValid = name.trim() !== "";
+    const isEmailValid = email.trim() !== "" && email.includes("@");
+
+    if (isNameValid && isEmailValid) {
+      onReserve(name, email);
+      setName("");
+      setEmail("");
+      setError({ name: false, email: false });
+    } else {
+      setError({ name: !isNameValid, email: !isEmailValid });
+    }
   };
 
   return (
     <Modal open={open} onClose={onClose}>
       <ModalContent>
         {modalType === "reserve" && (
-          <>
+          <Container>
             <Typography variant="h6">Reserve Slot</Typography>
-            <TextField
+            <StyledTextField
               label="Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               fullWidth
               margin="normal"
+              required
+              error={error.name}
+              helperText={error.name ? "Name is required" : ""}
             />
-            <TextField
+            <StyledTextField
               label="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type="email"
               fullWidth
               margin="normal"
+              required
+              error={error.email}
+              helperText={error.email ? "Valid email is required" : ""}
             />
-            <Button variant="contained" color="primary" onClick={handleReserve}>
+            <StyledButton
+              variant="contained"
+              color="primary"
+              onClick={handleReserve}
+            >
               Reserve
-            </Button>
-          </>
+            </StyledButton>
+          </Container>
         )}
         {modalType === "confirm" && slot && (
-          <>
+          <Container>
             <Typography variant="h6">Confirm Reservation</Typography>
             <Typography>
-              Are you sure you want to confirm your appointment on{" "}
-              {format(new Date(`1970-01-01T${slot.time}:00`), "MMMM d, yyyy")}{" "}
-              at {format(new Date(`1970-01-01T${slot.time}:00`), "hh:mm a")}.
+              Are you sure you want to confirm your appointment on
             </Typography>
-            <Button variant="contained" color="primary" onClick={onConfirm}>
+            <Typography variant="body1" fontWeight="bold">
+              {format(new Date(), "MMMM d, yyyy")} at{" "}
+              {format(new Date(`1970-01-01T${slot.time}:00`), "hh:mm a")}.
+            </Typography>
+            <StyledButton
+              variant="contained"
+              color="primary"
+              onClick={onConfirm}
+            >
               Confirm
-            </Button>
-          </>
+            </StyledButton>
+          </Container>
         )}
       </ModalContent>
     </Modal>
@@ -85,4 +110,19 @@ const ModalContent = styled(Box)`
   border-radius: 8px;
   width: 300px;
   margin: 100px auto;
+`;
+
+const Container = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const StyledTextField = styled(TextField)`
+  margin-bottom: 20px;
+`;
+
+const StyledButton = styled(Button)`
+  align-self: flex-end;
+  padding: 10px 20px;
 `;

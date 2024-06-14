@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Box, Typography, IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import styled from "styled-components";
-import { addMinutes, format } from "date-fns";
+import { addMinutes, format, parse } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 import { ScheduleList } from "./ScheduleList";
 import { fetchProviderSchedule, fetchReservations } from "./api";
@@ -10,6 +10,7 @@ import { updateSlotsWithReservations } from "./utils";
 import { Schedule } from "../../types";
 import { isError } from "../../utils/typeguards";
 import { AppointmentModal } from "../AppointmentModal";
+import { API_URL } from "../../utils/constants";
 
 interface ProviderScheduleProps {
   providerId: string;
@@ -91,7 +92,7 @@ export const ProviderSchedule: React.FC<ProviderScheduleProps> = ({
 
         // Create a new client
         const newClient = { id: uuidv4(), name, email };
-        const clientResponse = await fetch("http://localhost:3001/clients", {
+        const clientResponse = await fetch(`${API_URL}/clients`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -113,7 +114,7 @@ export const ProviderSchedule: React.FC<ProviderScheduleProps> = ({
         setSlots(newSlots);
 
         // Update db.json with the reservation
-        const response = await fetch("http://localhost:3001/reservations", {
+        const response = await fetch(`${API_URL}/reservations`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -125,7 +126,7 @@ export const ProviderSchedule: React.FC<ProviderScheduleProps> = ({
             date: dateKey,
             startTime: selectedSlot.time,
             endTime: format(
-              addMinutes(new Date(`1970-01-01T${selectedSlot.time}:00`), 15),
+              addMinutes(parse(selectedSlot.time, "HH:mm", new Date()), 15),
               "HH:mm"
             ),
             status: "pending",
@@ -140,11 +141,13 @@ export const ProviderSchedule: React.FC<ProviderScheduleProps> = ({
 
         setModalOpen(false);
 
-        // Start timeout to handle expiration in the component
+        // Handle the 15-minute expiration timeout
+        // Ideally this should be handled by a cron-job or BE service
+        // Could also be handled with a web service worker
         const timeoutId = window.setTimeout(async () => {
           try {
             const expireResponse = await fetch(
-              `http://localhost:3001/reservations/${reservationId}`,
+              `${API_URL}/reservations/${reservationId}`,
               {
                 method: "PATCH",
                 headers: {
@@ -203,7 +206,7 @@ export const ProviderSchedule: React.FC<ProviderScheduleProps> = ({
         setSlots(newSlots);
 
         const response = await fetch(
-          `http://localhost:3001/reservations/${selectedSlot.reservationId}`,
+          `${API_URL}/reservations/${selectedSlot.reservationId}`,
           {
             method: "PATCH",
             headers: {

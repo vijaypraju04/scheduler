@@ -64,55 +64,7 @@
     }
   ],
   "clients": [
-    {
-      "id": "5b204cd8-c09e-46b6-b236-b23dd9dcca2e",
-      "name": "Vijay Raju",
-      "email": "vijaypraju04@gmail.com"
-    },
-    {
-      "id": "ae549753-7147-477e-bd44-95145b91b9cf",
-      "name": "John Parker",
-      "email": "johnparker@gmail.com"
-    },
-    {
-      "id": "106cc497-4dfa-4c5c-86d7-6f86dcaf6305",
-      "name": "",
-      "email": ""
-    }
   ],
   "reservations": [
-    {
-      "id": "26716b19-4ea9-4a3f-bb8f-a3ee6202bc8f",
-      "clientId": "5b204cd8-c09e-46b6-b236-b23dd9dcca2e",
-      "providerId": "p3",
-      "date": "2024-06-21",
-      "startTime": "21:15",
-      "endTime": "21:30",
-      "status": "pending",
-      "madeAt": "2024-06-14T00:47:22.509Z",
-      "expiresAt": "2024-06-14T01:02:22.509Z"
-    },
-    {
-      "id": "1674d760-fbf5-420b-8494-48276c1bd3ae",
-      "clientId": "ae549753-7147-477e-bd44-95145b91b9cf",
-      "providerId": "p1",
-      "date": "2024-06-18",
-      "startTime": "16:15",
-      "endTime": "16:30",
-      "status": "confirmed",
-      "madeAt": "2024-06-14T00:48:03.092Z",
-      "expiresAt": "2024-06-14T01:03:03.092Z"
-    },
-    {
-      "id": "98eb89dc-84f1-45c0-9bff-da93b31c4c9b",
-      "clientId": "106cc497-4dfa-4c5c-86d7-6f86dcaf6305",
-      "providerId": "p1",
-      "date": "2024-06-18",
-      "startTime": "16:00",
-      "endTime": "16:15",
-      "status": "pending",
-      "madeAt": "2024-06-14T00:48:23.032Z",
-      "expiresAt": "2024-06-14T01:03:23.032Z"
-    }
   ]
 }

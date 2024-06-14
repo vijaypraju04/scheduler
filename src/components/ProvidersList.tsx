@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import styled from "styled-components";
 import { isError } from "../utils/typeguards";
+import { API_URL } from "../utils/constants";
 
 interface ProvidersListProps {
   onSelectProvider: (id: string, name: string) => void;
@@ -25,7 +26,7 @@ export const ProvidersList: React.FC<ProvidersListProps> = ({
   useEffect(() => {
     const fetchProviders = async () => {
       try {
-        const response = await fetch("http://localhost:3001/providers");
+        const response = await fetch(`${API_URL}/providers`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -52,7 +53,7 @@ export const ProvidersList: React.FC<ProvidersListProps> = ({
   return (
     <Container>
       <PageHeader variant="h5">Select your provider...</PageHeader>
-      <CardGrid>
+      <ProvidersFlex>
         {providers.map(({ id, name }) => (
           <StyledCard key={id} onClick={() => onSelectProvider(id, name)}>
             <CardActionArea>
@@ -62,7 +63,7 @@ export const ProvidersList: React.FC<ProvidersListProps> = ({
             </CardActionArea>
           </StyledCard>
         ))}
-      </CardGrid>
+      </ProvidersFlex>
     </Container>
   );
 };
@@ -83,11 +84,13 @@ const PageHeader = styled(Typography)`
   line-height: 38px;
   color: #475467;
   margin-bottom: 20px;
+  text-align: center;
 `;
 
-const CardGrid = styled(Box)`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+const ProvidersFlex = styled(Box)`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
   width: 100%;
 `;

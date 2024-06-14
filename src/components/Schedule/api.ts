@@ -1,6 +1,8 @@
+import { API_URL } from "../../utils/constants";
+
 export const fetchProviderSchedule = async (providerId: string) => {
   const response = await fetch(
-    `http://localhost:3001/schedules?providerId=${providerId}`
+    `${API_URL}/schedules?providerId=${providerId}`
   );
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -14,7 +16,7 @@ export const fetchProviderSchedule = async (providerId: string) => {
 
 export const fetchReservations = async (providerId: string) => {
   const response = await fetch(
-    `http://localhost:3001/reservations?providerId=${providerId}`
+    `${API_URL}/reservations?providerId=${providerId}`
   );
   if (!response.ok) {
     throw new Error("Network response was not ok");

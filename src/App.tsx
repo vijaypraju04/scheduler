@@ -7,7 +7,7 @@ const App: React.FC = () => {
   return (
     <AppContainer>
       <Header>
-        <h1>Appointment Booker</h1>
+        <h4>Appointment Booker</h4>
       </Header>
       <main>
         <AppointmentBooker />
