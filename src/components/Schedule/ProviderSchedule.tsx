@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Box, Typography, IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import styled from "styled-components";
-import { addMinutes, isBefore } from "date-fns";
+import { addMinutes, format } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 import { ScheduleList } from "./ScheduleList";
 import { fetchProviderSchedule, fetchReservations } from "./api";
@@ -19,7 +19,7 @@ interface ProviderScheduleProps {
 
 interface Slot {
   time: string;
-  state: "unbooked" | "reserved" | "booked";
+  state: "unbooked" | "pending" | "confirmed";
   reservationExpiresAt?: Date;
   reservationId?: string;
 }
@@ -37,7 +37,7 @@ export const ProviderSchedule: React.FC<ProviderScheduleProps> = ({
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState<"reserve" | "confirm">("reserve");
 
-  const clientId = localStorage.getItem("clientId");
+  const timeoutIds = useRef<{ [key: string]: number }>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,7 +71,7 @@ export const ProviderSchedule: React.FC<ProviderScheduleProps> = ({
         setSelectedSlot(slot);
         setModalType("reserve");
         setModalOpen(true);
-      } else if (slot.state === "reserved") {
+      } else if (slot.state === "pending") {
         setSelectedSlot(slot);
         setModalType("confirm");
         setModalOpen(true);
@@ -88,32 +88,46 @@ export const ProviderSchedule: React.FC<ProviderScheduleProps> = ({
       if (dateKey) {
         const slotIndex = newSlots[dateKey].indexOf(selectedSlot);
         const reservationId = uuidv4();
+
+        // Create a new client
+        const newClient = { id: uuidv4(), name, email };
+        const clientResponse = await fetch("http://localhost:3001/clients", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newClient),
+        });
+
+        if (!clientResponse.ok) {
+          console.error("Failed to create a new client");
+          return;
+        }
+
         newSlots[dateKey][slotIndex] = {
           ...selectedSlot,
-          state: "reserved",
+          state: "pending",
           reservationExpiresAt: addMinutes(new Date(), 15),
           reservationId,
         };
         setSlots(newSlots);
 
-        // Update db.json
+        // Update db.json with the reservation
         const response = await fetch("http://localhost:3001/reservations", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            id: reservationId, // Use the generated reservationId
-            clientId, // Use the persisted client ID
+            id: reservationId,
+            clientId: newClient.id,
             providerId: providerId,
             date: dateKey,
             startTime: selectedSlot.time,
-            endTime: addMinutes(
-              new Date(`1970-01-01T${selectedSlot.time}:00`),
-              15
-            )
-              .toISOString()
-              .substring(11, 16),
+            endTime: format(
+              addMinutes(new Date(`1970-01-01T${selectedSlot.time}:00`), 15),
+              "HH:mm"
+            ),
             status: "pending",
             madeAt: new Date().toISOString(),
             expiresAt: addMinutes(new Date(), 15).toISOString(),
@@ -126,7 +140,8 @@ export const ProviderSchedule: React.FC<ProviderScheduleProps> = ({
 
         setModalOpen(false);
 
-        setTimeout(async () => {
+        // Start timeout to handle expiration in the component
+        const timeoutId = window.setTimeout(async () => {
           try {
             const expireResponse = await fetch(
               `http://localhost:3001/reservations/${reservationId}`,
@@ -136,7 +151,7 @@ export const ProviderSchedule: React.FC<ProviderScheduleProps> = ({
                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                  status: "expired",
+                  status: "unbooked",
                 }),
               }
             );
@@ -148,13 +163,15 @@ export const ProviderSchedule: React.FC<ProviderScheduleProps> = ({
             setSlots((prevSlots) => {
               const updatedSlots = { ...prevSlots };
               if (
-                updatedSlots[dateKey][slotIndex].state === "reserved" &&
+                updatedSlots[dateKey][slotIndex].state === "pending" &&
                 updatedSlots[dateKey][slotIndex].reservationExpiresAt! <=
                   new Date()
               ) {
                 updatedSlots[dateKey][slotIndex] = {
                   ...updatedSlots[dateKey][slotIndex],
                   state: "unbooked",
+                  reservationExpiresAt: undefined,
+                  reservationId: undefined,
                 };
               }
               return updatedSlots;
@@ -163,6 +180,9 @@ export const ProviderSchedule: React.FC<ProviderScheduleProps> = ({
             console.error("Error expiring reservation:", error);
           }
         }, 15 * 60 * 1000); // 15 minutes in milliseconds
+
+        // Store timeout ID to cancel if necessary
+        timeoutIds.current[reservationId] = timeoutId;
       }
     }
   };
@@ -177,7 +197,7 @@ export const ProviderSchedule: React.FC<ProviderScheduleProps> = ({
         const slotIndex = newSlots[dateKey].indexOf(selectedSlot);
         newSlots[dateKey][slotIndex] = {
           ...selectedSlot,
-          state: "booked",
+          state: "confirmed",
           reservationExpiresAt: undefined,
         };
         setSlots(newSlots);
@@ -198,6 +218,10 @@ export const ProviderSchedule: React.FC<ProviderScheduleProps> = ({
         if (!response.ok) {
           console.error("Failed to update the reservation");
         }
+
+        // Cancel the timeout if the reservation is confirmed
+        clearTimeout(timeoutIds.current[selectedSlot.reservationId!]);
+        delete timeoutIds.current[selectedSlot.reservationId!];
 
         setModalOpen(false);
       }

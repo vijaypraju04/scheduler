@@ -10,7 +10,7 @@ interface AppointmentModalProps {
   onConfirm: () => void;
   slot: {
     time: string;
-    state: "unbooked" | "reserved" | "booked";
+    state: "unbooked" | "pending" | "confirmed";
     reservationExpiresAt?: Date;
   } | null;
   modalType: "reserve" | "confirm";

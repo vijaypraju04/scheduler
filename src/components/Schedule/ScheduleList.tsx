@@ -38,13 +38,13 @@ export const ScheduleList: React.FC<ScheduleListProps> = ({
                     display: "flex",
                     alignItems: "center",
                     cursor:
-                      slot.state === "unbooked" || slot.state === "reserved"
+                      slot.state === "unbooked" || slot.state === "pending"
                         ? "pointer"
                         : "default",
                     backgroundColor:
-                      slot.state === "booked"
+                      slot.state === "confirmed"
                         ? "#d3d3d3"
-                        : slot.state === "reserved"
+                        : slot.state === "pending"
                         ? "#ffa07a"
                         : "#fff",
                   }}
@@ -56,12 +56,12 @@ export const ScheduleList: React.FC<ScheduleListProps> = ({
                         "hh:mm a"
                       )}
                     </Typography>
-                    {slot.state === "reserved" && (
+                    {slot.state === "pending" && (
                       <Typography variant="caption" color="textSecondary">
                         Reserved
                       </Typography>
                     )}
-                    {slot.state === "booked" && (
+                    {slot.state === "confirmed" && (
                       <Typography variant="caption" color="textSecondary">
                         Booked
                       </Typography>

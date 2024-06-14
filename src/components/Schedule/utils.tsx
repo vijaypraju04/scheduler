@@ -24,15 +24,15 @@ export const updateSlotsWithReservations = (
           res.providerId === providerId
       );
 
-      let state: "unbooked" | "reserved" | "booked" = "unbooked";
+      let state: "unbooked" | "pending" | "confirmed" = "unbooked";
       if (reservation) {
         if (reservation.status === "confirmed") {
-          state = "booked";
+          state = "confirmed";
         } else if (
           reservation.status === "pending" &&
           !isBefore(new Date(reservation.expiresAt as string), new Date())
         ) {
-          state = "reserved";
+          state = "pending";
         }
       }
 

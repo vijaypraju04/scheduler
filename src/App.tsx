@@ -4,13 +4,6 @@ import { AppointmentBooker } from "./components/AppointmentBooker";
 import { v4 as uuidv4 } from "uuid";
 
 const App: React.FC = () => {
-  useEffect(() => {
-    const clientId = localStorage.getItem("clientId");
-    if (!clientId) {
-      localStorage.setItem("clientId", uuidv4());
-    }
-  }, []);
-
   return (
     <AppContainer>
       <Header>

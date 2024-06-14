@@ -1,6 +1,7 @@
 export interface Slot {
   time: string;
-  state: "unbooked" | "reserved" | "booked";
+  state: "unbooked" | "pending" | "confirmed";
   reservationExpiresAt?: Date;
   reservationId?: string;
 }
+
