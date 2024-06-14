@@ -45,6 +45,7 @@ const AppointmentBookerContainer = styled(Box)`
 const AppointmentPageHeader = styled(Typography)`
   font-weight: 700;
   font-size: 16px;
+  text-align: center;
   line-height: 38px;
   color: #475467;
 `;
